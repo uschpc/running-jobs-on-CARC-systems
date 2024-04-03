@@ -41,7 +41,7 @@ When launching the Jupyter Lab, it is important to select the following
 * Set the number of hours to 4
 
 For the "DSR626" course, please do the above with the following change:
-* For Account, specify osinski_982
+* For Account, specify ujadhav_1068
 
 
 The above settings are important to ensure you start a JupyterLab Server on a node that is located on the Discovery cluster and has slurm management engine installed and configured
