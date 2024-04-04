@@ -46,7 +46,7 @@ For the "DSR626" course, please do the above with the following change:
 
 The above settings are important to ensure you start a JupyterLab Server on a node that is located on the Discovery cluster and has slurm management engine installed and configured
 
-![Launch JupyterLab](./images/jupyterlab-launch.png)
+![Launch JupyterLab](./images/jupyterlab-launching.png)
 
 Once your JupyterLab Session starts, Click Connect to JupyterLab button
 
