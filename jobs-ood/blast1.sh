@@ -4,7 +4,7 @@
 #SBATCH --partition debug
 #SBATCH --time=00:05:00
 #SBATCH --account=ttrojan_001
-#SBATCH --chdir /home1/ttrojan/computational-biology-on-carc
+#SBATCH --chdir /home1/${USER}/running-jobs-on-CARC-systems
 module purge
 module load usc
 module load blast-plus

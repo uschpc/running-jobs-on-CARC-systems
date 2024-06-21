@@ -5,7 +5,7 @@
 #SBATCH --time 01:00:00
 #SBATCH --mem 4g
 #SBATCH --account=ttrojan_001
-#SBATCH --chdir /home1/ttrojan/computational-biology-on-carc
+#SBATCH --chdir /home1/${USER}/running-jobs-on-CARC-systems
 module purge
 module load usc
 module load bowtie2
