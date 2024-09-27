@@ -16,9 +16,9 @@ This repository contains preconfigured slurm job script examples, to run on USC 
 #### Duration: 1.5 hours
 #### Prerequisites: An understanding of fundamental CARC Cluster setup and CARC Ondemand.
 #### Suggested materials to satisfy prerequisites:
-* [Gettting started with Discovery](https://www.carc.usc.edu/user-information/user-guides/hpc-basics/getting-started-discovery)
+* [Gettting started with Discovery](https://www.carc.usc.edu/user-guides/hpc-systems/discovery/getting-started-discovery.html)
 
-* [CARC Ondemand](https://www.carc.usc.edu/user-information/user-guides/hpc-basics/getting-started-ondemand)
+* [CARC Ondemand](https://www.carc.usc.edu/user-guides/carc-ondemand.html)
 
 
 #### Hardware Requirements: Desktop or laptop computer capable of running the latest version of Chrome or Firefox. 
@@ -26,7 +26,7 @@ This repository contains preconfigured slurm job script examples, to run on USC 
 #### Language: English
 
 ## Getting Started
-To get started, use a web browser and log on to USC OnDemand Instance at [https://ondemand.carc.usc.edu](https://ondemand.carc.usc.edu) . You need to be on USC Network and need to your USC credentials to log in. More details on how to logon to USC Open OnDemand can be found at [our guide](https://www.carc.usc.edu/user-information/user-guides/hpc-basics/getting-started-ondemand)
+To get started, use a web browser and log on to USC OnDemand Instance at [https://ondemand.carc.usc.edu](https://ondemand.carc.usc.edu) . You need to be on USC Network and need to your USC credentials to log in. More details on how to logon to USC Open OnDemand can be found at [our guide](https://www.carc.usc.edu/user-guides/carc-ondemand.html)
 
 To start a Jupyter notebook server, Click on Interactive Apps and then select JupyterLab.
 
