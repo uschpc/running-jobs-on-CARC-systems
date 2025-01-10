@@ -1,0 +1,177 @@
+---
+title: 03-Arrays
+output: html_document
+---
+
+Job Arrays
+
+- A way to run the same commands on many (hundreds, thousands) datasets/samples.
+- A variable called `$SLURM_ARRAY_TASK_ID` determines the element of the array being run.
+
+In a submission script arrays are defined with `--array` parameter e.g. `#SBATCH --array=1-1000`
+Then, in your job, `$SLURM_ARRAY_TASK_ID` becomes 1 in the first job, 2 in the second job, etc., until the last.
+
+Modify job or application to use index.
+
+
+#### A few quick prep commands:
+
+```{bash}
+mkdir -p ../../results/fastqc-rawseq-ordered
+mkdir -p ../../results/fastqc-rawseq-ordered-arr
+mkdir -p ../../results/fastqc-rawseq-unordered
+```
+
+```{bash}
+export PATH=/spack/utilities:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin
+```
+
+## Let's take a look at a directory with files that need to be processed:
+
+```{bash}
+ls -lh ../../data/raw-seq-ordered
+```
+
+The files contain the results of some gene sequencing, and we will use the `fastq` command to check the quality control.
+
+Our first attempt runs the same command on all files.
+
+```{bash}
+cat <<EOF > ../../jobs/fastqc_numbered.sh
+#!/bin/bash
+#SBATCH --nodes 1
+#SBATCH --ntasks 1
+#SBATCH --partition debug
+#SBATCH --time=00:05:00
+#SBATCH --chdir /home1/${USER}/running-jobs-on-CARC-systems
+#SBATCH --account=<account_id>
+module purge
+module load usc
+module load fastqc
+echo "Example FastQC start"
+fastqc -o results/fastqc-rawseq-ordered data/raw-seq-ordered/yeast_1_50K.fastq
+fastqc -o results/fastqc-rawseq-ordered data/raw-seq-ordered/yeast_2_50K.fastq
+fastqc -o results/fastqc-rawseq-ordered data/raw-seq-ordered/yeast_3_50K.fastq
+fastqc -o results/fastqc-rawseq-ordered data/raw-seq-ordered/yeast_4_50K.fastq
+fastqc -o results/fastqc-rawseq-ordered data/raw-seq-ordered/yeast_5_50K.fastq
+fastqc -o results/fastqc-rawseq-ordered data/raw-seq-ordered/yeast_6_50K.fastq
+echo "Example FastQC end"
+EOF
+```
+
+Let's submit the job
+
+```{bash}
+sbatch ../../jobs/fastqc_numbered.sh
+```
+
+Now we can check the progress (you can rerun the cell a few times)
+
+```{bash}
+squeue --me
+```
+
+After the job is complete we can inspect it and note the total runtime
+
+```{bash}
+jobinfo JOBID
+```
+
+What if we can run all commands at once? This has the potential to cut down the total run time almost linearly.
+Let's create a job file with the use of the slurm array
+
+```{bash}
+cat <<EOF > ../../jobs/fastqc_numbered_array.sh
+#!/bin/bash
+#SBATCH --nodes 1
+#SBATCH --ntasks 1
+#SBATCH --partition main
+#SBATCH --time=00:05:00
+#SBATCH --array=1-6
+#SBATCH --chdir /home1/${USER}/running-jobs-on-CARC-systems
+#SBATCH --account=<account_id>
+module purge
+module load usc
+module load fastqc
+echo "Example FastQC start"
+fastqc -o results/fastqc-rawseq-ordered-arr data/raw-seq-ordered/yeast_${SLURM_ARRAY_TASK_ID}_50K.fastq
+echo "Example FastQC end"
+EOF
+```
+
+Let's submit the job
+
+```{bash}
+sbatch ../../jobs/fastqc_numbered_array.sh
+```
+
+Now we can check the progress (you can rerun the cell a few times)
+
+```{bash}
+squeue --me
+```
+
+After the job is complete we can inspect it and note the total runtime
+
+```{bash}
+jobinfo JOBID
+```
+
+Was it faster than the serial job you ran previously?
+
+What if the input files are not named in a way that allows for the direct use of array ID numbers?
+We can create a text file with the names of all files we need to use in computations and then extract the correct file names using line numbers and array task IDs.
+
+Take a look at the file names
+
+```{bash}
+ls -lh ../../data/raw-seq
+```
+
+The job script will look like this:
+
+```{bash}
+cat <<EOF > ../../jobs/fastqc_unnumbered_array.sh
+#!/bin/bash
+#SBATCH --nodes 1
+#SBATCH --ntasks 1
+#SBATCH --partition main
+#SBATCH --time=00:05:00
+#SBATCH --array=1-6
+#SBATCH --chdir /home1/${USER}/running-jobs-on-CARC-systems
+#SBATCH --account=<account_id>
+module purge
+module load usc
+module load fastqc
+echo "Example FastQC start"
+echo "making list of files"
+ls data/raw-seq/ > unnumbered-filenames.txt
+echo "preparing the input"
+line=$(sed -n -e "$SLURM_ARRAY_TASK_ID p" unnumbered-filenames.txt)
+echo "running FastQC"
+fastqc -o results/fastqc-rawseq-unordered data/raw-seq/${line}
+echo "Example FastQC end"
+EOF
+```
+
+Submit job
+
+```{bash}
+sbatch ../../jobs/fastqc_unnumbered_array.sh
+```
+
+check the progress
+
+```{bash}
+squeue --me
+```
+
+inspect the job and note the total runtime
+
+```{bash}
+jobinfo JOBID
+```
+
+# What's Next?
+
+To continue exploring, please open the notebook in `04-Troubleshooting/`

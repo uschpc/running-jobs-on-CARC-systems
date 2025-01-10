@@ -1,0 +1,235 @@
+---
+title: 04-Troubleshooting
+output:
+  html_document:
+    code_folding: hide
+---
+
+# Troubleshooting
+
+## What is wrong 1
+
+```{bash active="", eval=FALSE, class.source = 'fold-show'}
+#!/bin/bash
+# ----------------SLURM Parameters----------------
+#SBATCH --partition main
+#SBATCH --ntasks 1
+#SBATCH --mem=1g
+#SBATCH --nodes 1
+#SBATCH --chdir /home1/${USER}/running-jobs-on-CARC-systems
+#SBATCH --account=<account_id>
+# ----------------Load Modules--------------------
+# ----------------Commands------------------------
+python3 /home1/${USER}/script.py
+```
+
+### Solution
+
+Click 'Show' on the right side to see the solution.
+
+```{bash active="", eval=FALSE}
+#!/bin/bash
+# ----------------SLURM Parameters----------------
+#SBATCH --partition main
+#SBATCH --ntasks 1
+#SBATCH --mem=1g
+#SBATCH --nodes 1
+#SBATCH --chdir /home1/${USER}/running-jobs-on-CARC-systems
+#SBATCH --account=<account_id>
+# ----------------Load Modules--------------------
+module purge
+module load usc
+module load python/3.9.12
+# ----------------Commands------------------------
+python3 /home1/${USER}/script.py
+```
+
+## What is wrong 2
+
+```{bash active="", eval=FALSE, class.source = 'fold-show'}
+#!/bin/bash
+# ----------------SLURM Parameters----------------
+#SBATCH --partition main
+#SBATCH --ntasks 20
+#SBATCH --mem=10g
+#SBATCH --nodes 1
+# ----------------Load Modules--------------------
+module purge
+module load usc
+module load blast-plus
+# ----------------Commands------------------------
+blastn -query fasta.file -db database_name -outfmt 6 \
+-num_alignments 1 -num_descriptions 1 -out output_file
+```
+
+### Solution
+
+Click 'Show' on the right side to see the solution.
+
+```{bash active="", eval=FALSE}
+#!/bin/bash
+# ----------------SLURM Parameters----------------
+#SBATCH --partition main
+#SBATCH --ntasks 20
+#SBATCH --mem=10g
+#SBATCH --nodes 1
+#SBATCH --chdir /home1/${USER}/running-jobs-on-CARC-systems
+#SBATCH --account=<account_id>
+# ----------------Load Modules--------------------
+module purge
+module load usc
+module load blast-plus
+# ----------------Commands------------------------
+blastn -query fasta.file -db database_name -outfmt 6 num_alignments 1 \ -num_descriptions 1 -out output_file -num_threads 20
+```
+
+### Even better solution
+
+Click 'Show' on the right side to see the solution.
+
+```{bash active="", eval=FALSE}
+#!/bin/bash
+# ----------------SLURM Parameters----------------
+#SBATCH --partition main
+#SBATCH --ntasks 20
+#SBATCH --mem=10g
+#SBATCH --nodes 1
+#SBATCH --chdir /home1/${USER}/running-jobs-on-CARC-systems
+#SBATCH --account=<account_id>
+# ----------------Load Modules--------------------
+module purge
+module load usc
+module load blast-plus
+# ----------------Commands------------------------
+blastn -query fasta.file -db database_name -outfmt 6 num_alignments 1 \ -num_descriptions 1 -out output_file -num_threads $SLURM_NTASKS
+```
+
+## What is wrong 3
+
+```{bash active="", eval=FALSE, class.source = 'fold-show'}
+#!/bin/bash
+# ----------------SLURM Parameters----------------
+#SBATCH --partition main
+#SBATCH --ntasks 1
+#SBATCH --mem=200g
+#SBATCH --nodes 1
+#SBATCH --chdir /home1/${USER}/running-jobs-on-CARC-systems
+#SBATCH --account=<account_id>
+# ----------------Load Modules--------------------
+module purge
+module load usc
+module load openblas
+module load r
+# ----------------Commands------------------------
+Rscript /home1/${USER}/R_example.R
+```
+
+### Solution
+
+Click 'Show' on the right side to see the solution.
+
+```{bash active="", eval=FALSE}
+#SOLUTION!
+#!/bin/bash
+# ----------------SLURM Parameters----------------
+#SBATCH --partition epyc-64
+#SBATCH --ntasks 1
+#SBATCH --mem=200g
+#SBATCH --nodes 1
+#SBATCH --chdir /home1/${USER}/running-jobs-on-CARC-systems
+#SBATCH --account=<account_id>
+# ----------------Load Modules--------------------
+module purge
+module load usc
+module load openblas
+module load r
+# ----------------Commands------------------------
+Rscript /home1/${USER}/R_example.R
+```
+
+## What is wrong 4
+
+```{bash active="", eval=FALSE, class.source = 'fold-show'}
+#!/bin/bash
+# ----------------SLURM Parameters----------------
+#SBATCH --partition gpu
+#SBATCH --nodes 1
+#SBATCH --mem=4g
+#SBATCH --ntasks 1
+#SBATCH --chdir /home1/${USER}/running-jobs-on-CARC-systems
+# ----------------Load Modules--------------------
+module purge
+module load usc
+module load cuda/11.5.1
+module load python
+# ----------------Commands------------------------
+python3 /home1/${USER}/my_gpu_accelerated_script.py
+```
+
+### Solution
+
+Click 'Show' on the right side to see the solution.
+
+```{bash active="", eval=FALSE}
+#SOLUTION!
+#!/bin/bash
+# ----------------SLURM Parameters----------------
+#SBATCH --partition gpu
+#SBATCH --nodes 1
+#SBATCH --mem=4g
+#SBATCH --ntasks 1
+#SBATCH --gres=gpu:a100:1
+#SBATCH --chdir /home1/${USER}/running-jobs-on-CARC-systems
+#SBATCH --account=<account_id>
+# ----------------Load Modules--------------------
+module purge
+module load usc
+module load cuda/11.5.1
+module load python
+# ----------------Commands------------------------
+python3 /home1/${USER}/my_gpu_accelerated_script.py
+```
+
+## What is wrong 5
+
+```{bash active="", eval=FALSE, class.source = 'fold-show'}
+# ----------------SLURM Parameters----------------
+#SBATCH --partition main
+#SBATCH --ntasks 1
+#SBATCH --mem=15g
+#SBATCH --nodes 1
+#SBATCH --chdir /home1/${USER}/running-jobs-on-CARC-systems
+#SBATCH --account=<account_id>
+# ----------------Load Modules--------------------
+module purge
+module load usc
+module load samtools
+# ----------------Commands------------------------
+samtools stats example.bam
+```
+
+### Solution
+
+Click 'Show' on the right side to see the solution.
+
+```{bash active="", eval=FALSE}
+#SOLUTION!
+#!/bin/bash
+# ----------------SLURM Parameters----------------
+#SBATCH --partition main
+#SBATCH --ntasks 1
+#SBATCH --mem=15g
+#SBATCH --nodes 1
+#SBATCH --chdir /home1/${USER}/running-jobs-on-CARC-systems
+#SBATCH --account=<account_id>
+# ----------------Load Modules--------------------
+module purge
+module load usc
+module load samtools
+# ----------------Commands------------------------
+samtools stats example.bam
+```
+
+## What's Next?
+
+The next Notebook is `05-Summary`, which summarizes what we have learned so far.

@@ -1,0 +1,74 @@
+---
+title: 05-Summary
+output: html_document
+---
+
+# Summary
+
+## Things to note:
+
+#### - Job length
+
+```         
+- If over 24 hours, can this be split up? Can threads be increased?
+  
+```
+
+#### - Many small files
+
+```         
+- To be avoided!
+- Group into larger files
+  
+```
+
+#### - Data
+
+```         
+- Save space by removing temp files
+- Archive data as soon as reasonable
+- Let us know if you are adding several TB of data
+```
+
+#### - Use /scratch1 whenever possible for temporary files
+
+#### - Make sure you are not on the login node when you launch an application
+
+```         
+- You can check the system you are on by typing hostname
+```
+
+#### - Make sure you reserve as many processors as you need
+
+```         
+- A mismatch here can increase your runtime or wait time
+```
+
+#### - Make sure you reserve as much RAM as needed
+
+```         
+- Overestimating increases wait time, underestimating crashes
+```
+
+#### - Know which resources work the best
+
+```         
+- Sometimes, using a debug or epyc-64 is better
+```
+
+## Resources
+
+-   [CARC home page](https://carc.usc.edu)
+-   [CARC User Forum](https://hpc-discourse.usc.edu/categories)
+-   [SLURM tutorials](https://slurm.schedmd.com/tutorials.html)
+-   [SLURM quick reference](https://slurm.schedmd.com/pdfs/summary.pdf)
+
+## Support
+
+-   Visit [CARC support page](https://www.carc.usc.edu/user-support) and navigate through our guides
+-   [Submit a ticket](https://www.carc.usc.edu/user-information/ticket-submission)
+
+## Office Hours
+
+CARC Team holds weekly office hours on Tuesdays. You can find more details [here](https://www.carc.usc.edu/education-and-resources/office-hours/)
+

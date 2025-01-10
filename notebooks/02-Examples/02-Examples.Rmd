@@ -1,0 +1,188 @@
+---
+title: 02-Examples
+output: html_document
+---
+
+# Examples
+
+### A quick prep:
+
+```{bash}
+export PATH=/spack/utilities:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin
+```
+
+## A job example utilizing slurm variables:
+
+```{bash}
+cat <<EOF > ../../jobs/sample_var_job.sh
+#!/bin/bash
+#SBATCH --nodes 1
+#SBATCH --ntasks 1
+#SBATCH --partition debug
+#SBATCH --time=00:05:00
+#SBATCH --chdir /home1/${USER}/running-jobs-on-CARC-systems
+#SBATCH --account=<account_id>
+module purge
+module load usc
+echo "Job ID: $SLURM_JOB_ID"
+echo "Nodelist: $SLURM_JOB_NODELIST"
+cd $SLURM_SUBMIT_DIR
+echo `pwd`
+EOF
+```
+
+Submit with:
+
+```{bash}
+sbatch ../../jobs/sample_var_job.sh
+```
+
+Check progress:
+
+```{bash}
+squeue --me
+```
+
+## A job example utilizing some of CARC resources (NCBI's Genbank BLAST DB):
+
+Prep:
+
+```{bash}
+mkdir ../../results/blast
+```
+
+```{bash}
+cat <<EOF > ../../jobs/sample_blast.sh
+#!/bin/bash
+#SBATCH --nodes 1
+#SBATCH --ntasks 10
+#SBATCH --partition debug
+#SBATCH --time=00:05:00
+#SBATCH --chdir /home1/${USER}/running-jobs-on-CARC-systems
+#SBATCH --account=<account_id>
+module purge
+module load usc
+module load blast-plus
+mkdir -p results/blast
+echo "Example blast start"
+sleep 20
+blastp -db /project/biodb/genbank/2024-03-01/swissprot -query data/blast/query.txt -out results/blast/results.txt -num_threads $SLURM_NTASKS
+echo "Example blast end"
+EOF
+```
+
+Submit with:
+
+```{bash}
+sbatch ../../jobs/sample_blast.sh
+```
+
+Check progress:
+
+```{bash}
+squeue --me
+```
+
+## (Optional) A job utilizing the MPI interface:
+
+### Prepare the mpi program
+
+```{bash}
+mkdir -p ../../data/mpi_sample
+```
+
+Write down a simple mpi program, create a Makefile and compile the program
+
+```{bash}
+cat <<EOF > ../../data/mpi_sample/Makefile
+// Author: Wes Kendall
+// Copyright 2011 www.mpitutorial.com
+// This code is provided freely with the tutorials on mpitutorial.com. Feel
+// free to modify it for your own use. Any distribution of the code must
+// either provide a link to www.mpitutorial.com or keep this header intact.
+//
+// An intro MPI hello world program that uses MPI_Init, MPI_Comm_size,
+// MPI_Comm_rank, MPI_Finalize, and MPI_Get_processor_name.
+//
+#include <mpi.h>
+#include <stdio.h>
+
+int main(int argc, char** argv) {
+  // Initialize the MPI environment. The two arguments to MPI Init are not
+  // currently used by MPI implementations, but are there in case future
+  // implementations might need the arguments.
+  MPI_Init(NULL, NULL);
+
+  // Get the number of processes
+  int world_size;
+  MPI_Comm_size(MPI_COMM_WORLD, &world_size);
+
+  // Get the rank of the process
+  int world_rank;
+  MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
+
+  // Get the name of the processor
+  char processor_name[MPI_MAX_PROCESSOR_NAME];
+  int name_len;
+  MPI_Get_processor_name(processor_name, &name_len);
+
+  // Print off a hello world message
+  printf("Hello world from processor %s, rank %d out of %d processors\\n",
+         processor_name, world_rank, world_size);
+
+  // Finalize the MPI environment. No more MPI calls can be made after this
+  MPI_Finalize();
+}"""
+with open('../../data/mpi_sample/mpi_hello_world.c', 'w') as fp:
+    fp.write(mpi_hello_world)
+
+makefile="""EXECS=mpi_hello_world
+MPICC?=mpicc
+
+all: ${EXECS}
+
+mpi_hello_world: mpi_hello_world.c
+	${MPICC} -o mpi_hello_world mpi_hello_world.c
+
+clean:
+	rm -f ${EXECS}
+EOF
+```
+
+```{bash}
+cd ../../data/mpi_sample && module load usc && make && cd ../../notebooks/02-Examples
+```
+
+Create a job script and submit it
+
+```{bash}
+cat <<EOF > ../../jobs/sample_mpi_job.sh
+#!/bin/bash
+#SBATCH --nodes=3
+#SBATCH --ntasks=9
+#SBATCH --partition=main
+#SBATCH --time=00:05:00
+#SBATCH --mem=2g
+#SBATCH --chdir /home1/${USER}/running-jobs-on-CARC-systems
+#SBATCH --account=<account_id>
+
+module purge
+module load usc
+
+srun --mpi=pmix_v2 --ntasks $SLURM_NTASKS data/mpi_sample/mpi_hello_world
+EOF
+```
+
+```{bash}
+sbatch ../../jobs/sample_mpi_job.sh
+```
+
+Check progress:
+
+```{bash}
+squeue --me
+```
+
+# What's next?
+
+Troubleshooting in `03-Arrays`
