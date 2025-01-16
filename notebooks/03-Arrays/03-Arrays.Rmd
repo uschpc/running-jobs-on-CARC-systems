@@ -23,7 +23,7 @@ mkdir -p ../../results/fastqc-rawseq-unordered
 ```
 
 ```{bash}
-export PATH=/spack/utilities:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin
+export PATH=/apps/utilities:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin
 ```
 
 ## Let's take a look at a directory with files that need to be processed:

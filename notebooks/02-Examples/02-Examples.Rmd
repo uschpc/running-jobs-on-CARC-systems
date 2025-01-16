@@ -8,7 +8,7 @@ output: html_document
 ### A quick prep:
 
 ```{bash}
-export PATH=/spack/utilities:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin
+export PATH=/apps/utilities:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin
 ```
 
 ## A job example utilizing slurm variables:
