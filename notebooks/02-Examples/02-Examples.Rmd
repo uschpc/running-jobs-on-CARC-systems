@@ -20,7 +20,7 @@ module purge
 module load usc
 echo "Job ID: $SLURM_JOB_ID"
 echo "Nodelist: $SLURM_JOB_NODELIST"
-cd $SLURM_SUBMIT_DIR
+cd /home1/${USER}/running-jobs-on-CARC-systems
 echo `pwd`
 EOF
 ```
@@ -60,7 +60,7 @@ module load blast-plus
 mkdir -p results/blast
 echo "Example blast start"
 sleep 20
-blastp -db /project/biodb/genbank/2024-03-01/swissprot -query data/blast/query.txt -out results/blast/results.txt -num_threads $SLURM_NTASKS
+blastp -db /project2/biodb/genbank/2024-03-01/swissprot -query data/blast/query.txt -out results/blast/results.txt -num_threads 10
 echo "Example blast end"
 EOF
 ```
