@@ -7,6 +7,7 @@
 #SBATCH --chdir /home1/${USER}/running-jobs-on-CARC-systems
 module purge
 module load usc
+module load openjdk
 module load fastqc
 echo “Example FastQC start”
 sleep 20

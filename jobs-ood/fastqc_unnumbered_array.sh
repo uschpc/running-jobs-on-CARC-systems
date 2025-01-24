@@ -9,6 +9,7 @@
 
 module purge
 module load usc
+module load openjdk
 module load fastqc
 sleep 20
 
