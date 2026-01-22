@@ -33,7 +33,7 @@ do
   # download SRA
   fasterq-dump --split-files -e 1 ${sra}
   # align reads tp reference genome job
-  bwa mem -t 10 ${reference_genome} ${sra}_1.fastq ${sra}_2.fastq > ${outdir}/${sra}.sam
+  bwa mem -t 10 ${reference_genome} ${sra}_1.fastq.gz ${sra}_2.fastq.gz > ${outdir}/${sra}.sam
   # Aligning and converting $sam to bam format $bam
   samtools view -S -b ${sra}.aligned.sam > ${outdir}/${sra}.aligned.bam
   # Sorting $bam file to $sorted_bam
