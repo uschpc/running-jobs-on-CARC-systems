@@ -11,5 +11,6 @@ module load openjdk
 module load fastqc
 echo "Example FastQC start"
 sleep 20
+mkdir -p results/fastqc-rawseq
 fastqc -o results/fastqc-rawseq data/raw-seq/yeast_1_50K.fastq.gz
 echo "Example FastQC end"

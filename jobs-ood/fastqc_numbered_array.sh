@@ -11,6 +11,7 @@ module load usc
 module load openjdk
 module load fastqc
 sleep 20
+mkdir -p results/fastqc-rawseq-ordered-arr
 echo "Example FastQC start"
 fastqc -o results/fastqc-rawseq-ordered-arr data/raw-seq-ordered/yeast_${SLURM_ARRAY_TASK_ID}_50K.fastq.gz
 echo "Example FastQC end"

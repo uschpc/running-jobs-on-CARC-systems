@@ -12,7 +12,7 @@ module load usc
 module load openjdk
 module load fastqc
 sleep 20
-
+mkdir -p results/fastqc-rawseq-unordered
 echo "Example FastQC start"
 echo "making list of files"
 ls data/raw-seq/ > unnumbered-filenames.txt

@@ -11,6 +11,8 @@ module load usc
 module load bowtie2
 module load samtools
 module load bedtools2
+#create output directory
+mkdir -p results/read-mapping
 #copy sample data
 cp data/R*.gz results/read-mapping
 #unpack sample data
