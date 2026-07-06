@@ -30,7 +30,7 @@ To get started, use a web browser and log on to USC OnDemand Instance at [https:
 
 To start a Jupyter notebook server, Click on Interactive Apps and then select JupyterLab.
 
-![Start JupyterLab](./images/jupyterlab-start.png)
+![Start JupyterLab](./images/jupyterlab-start.jpg)
 
 When launching the Jupyter Lab, it is important to select the following
 * For Cluster, specify Discovery
@@ -40,23 +40,21 @@ When launching the Jupyter Lab, it is important to select the following
 * Set Memory to 2GB
 * Set the number of hours to 4
 
-For the regular CARC workshop, please do the above with the following change:
+For the Summer CARC workshop, please do the above with the following change:
 * For Account (CARC workshop), specify `hpcsuppt_613`
-* For Account (DSR-626), specify `ujadhav_1068`
-* For Account (BIOC-599), specify `rhie_131`
 
 
 The above settings are important to ensure you start a JupyterLab Server on a node that is located on the Discovery cluster and has slurm management engine installed and configured
 
-![Launch JupyterLab](./images/jupyterlab-launching.png)
+![Launch JupyterLab](./images/jupyterlab-launching.jpg)
 
 Once your JupyterLab Session starts, Click Connect to JupyterLab button
 
-![Connect to Running JupyterLab](./images/jupyterlab-running.png)
+![Connect to Running JupyterLab](./images/jupyterlab-running.jpg)
 
 From there, Click on File -> New and then click on Terminal to get the terminal
 
-![Shell Access In Jupyter](./images/terminal-start.png)
+![Shell Access In Jupyter](./images/terminal-start.jpg)
 
 Once in the terminal, clone this GitHub Repository
 

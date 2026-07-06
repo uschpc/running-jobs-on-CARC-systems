@@ -3,6 +3,7 @@
 #SBATCH --ntasks 10
 #SBATCH --partition main
 #SBATCH --time=00:05:00
+#SBATCH --mem 4g
 #SBATCH --account=ttrojan_001
 #SBATCH --chdir /home1/${USER}/running-jobs-on-CARC-systems
 module purge
